@@ -13,28 +13,14 @@ if ( ! class_exists('FEDE_Menu')) {
         /**
          * FEDE_Menu constructor.
          */
-        public function __construct()
-        {
-            add_action('fed_admin_input_item_options', array($this, 'fed_extra_admin_input_item_options'));
-            add_action('fed_admin_input_fields_container_extra', array(
-                $this,
-                'fed_extra_admin_input_fields_container_extra_date',
-            ), 10, 3);
-            add_action('fed_admin_input_fields_container_extra', array(
-                $this,
-                'fed_extra_admin_input_fields_container_extra_wp_editor',
-            ), 13, 3);
-            add_action('fed_admin_input_fields_container_extra', array(
-                $this,
-                'fed_extra_admin_input_fields_container_extra_file',
-            ), 12, 3);
-            add_action('fed_admin_input_fields_container_extra', array(
-                $this,
-                'fed_extra_admin_input_fields_container_extra_color',
-            ), 12, 3);
+        public function __construct(){
+			add_action('fed_admin_input_item_options', array($this, 'fed_extra_admin_input_item_options'));
+			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_date'), 10, 3);
+			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_wp_editor'), 13, 3);
+			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_file'), 12, 3);
+			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_color'), 12, 3);
 
-
-            add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
+			add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
         }
 
         /**
@@ -48,7 +34,7 @@ if ( ! class_exists('FEDE_Menu')) {
         {
             switch ($attr['input_type']) {
                 case 'date':
-                    FED_Log::writeLog($attr);
+                    // FED_Log::writeLog($attr);
                     $extended = array();
                     if (isset($attr['extended'])) {
                         $extended = $attr['extended'];
@@ -65,45 +51,59 @@ if ( ! class_exists('FEDE_Menu')) {
 
                     $time_24hr = isset($extended['time_24hr']) && ! empty($extended['time_24hr']) ? esc_attr($extended['time_24hr']) : false;
 
-                    $input .= '<input type="text" '.fed_get_data('is_required',
-                            $attr).' data-date-format="F j, Y h:i K" data-alt-format="'.$dateFormat.'" data-alt-input="true" data-mode="'.$mode.'" placeholder="'.$dateFormat.'" data-enable-time="'.$enableTime.'" data-time_24hr="'.$time_24hr.'" type="text" name="'.$attr['input_meta'].'"    class="flatpickr '.fed_get_data('class_name',
-                            $attr).'"  id="'.fed_get_data('id_name', $attr).'" value="'.fed_get_data('user_value',
-                            $attr).'" >';
+                    $input .= '<input type="text" '.fed_get_data('is_required', $attr).' 
+						data-date-format="U" 
+						data-alt-format="'.$dateFormat.'" 
+						data-alt-input="true" 
+						data-mode="'.$mode.'" 
+						placeholder="'.$dateFormat.'" 
+						data-enable-time="'.$enableTime.'" 
+						data-time_24hr="'.$time_24hr.'" 
+						type="text" 
+						name="'.$attr['input_meta'].'" 
+						class="flatpickr '.fed_get_data('class_name', $attr).'" 
+						id="'.fed_get_data('id_name', $attr).'" 
+						value="'.fed_get_data('user_value', $attr).'" >';
+						
                     break;
 
                 case 'wp_editor':
-                    $input .= fed_e_form_wpeditor($attr);
-                    break;
+					$input .= fed_e_form_wpeditor($attr);
+					break;
 
-                case 'color':
-                    $user_value = fed_get_data('user_value', $attr, '#000000');
-                    $input      .= '<input '.fed_get_data('is_required', $attr).' '.fed_get_data('disabled',
-                            $attr).'  type="text" name="'.$attr['input_meta'].'"    class="form-control jscolor {hash:true} '.fed_get_data('class_name',
-                            $attr).'"  id="'.fed_get_data('id_name', $attr).'"  value="'.$user_value.'" >';
-                    break;
+				case 'color':
+					$user_value = fed_get_data('user_value', $attr, '#000000');
+					$input .= '<input '.fed_get_data('is_required', $attr).' '.fed_get_data('disabled',$attr).' 
+						type="text" 
+						name="'.$attr['input_meta'].'" 
+						class="form-control jscolor {hash:true} '.fed_get_data('class_name', $attr).'" 
+						id="'.fed_get_data('id_name', $attr).'" 
+						value="'.$user_value.'" 
+					>';
+					break;
 
-                case 'file':
-                    $user_value =fed_get_data('user_value',$attr);
-                    if ( ! empty($user_value)) {
-                        $attr['user_value'] = (int) $user_value;
-                        $img                = $this->get_image_by_type($attr);
-                        if (empty($img)) {
-                            $img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
-                        }
-                    } else {
-                        $attr['user_value'] = '';
-                        $img                = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
-                    }
-                    $input .= '<div class="fed_upload_wrapper"><div class="fed_upload_container text-center '.fed_get_data('class_name',
-                            $attr).'" id="'.fed_get_data('id_name', $attr).'">	
-<div class="fed_upload_image_container">'.$img.'</div>
-<input type="hidden" name="'.$attr['input_meta'].'" class="fed_upload_input" value="'.$attr['user_value'].'"  /></div>
-<span class="fed_remove_image">X</span>
+				case 'file':
+					$user_value =fed_get_data('user_value',$attr);
+					if ( ! empty($user_value)) {
+						$attr['user_value'] = (int) $user_value;
+						$img = $this->get_image_by_type($attr);
+						if (empty($img)) {
+							$img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
+						}
+					} else {
+						$attr['user_value'] = '';
+						$img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
+					}
+					$input .= '<div class="fed_upload_wrapper">
+						<button type="button" class="close fed_remove_image" aria-label="Close" style="margin-right:.5rem;"><span aria-hidden="true">&times;</span></button>
+						<div class="fed_upload_container text-center '.fed_get_data('class_name', $attr).'" id="'.fed_get_data('id_name', $attr).'">
+							<div class="fed_upload_image_container thumbnail">'.$img.'</div>
+							<input type="hidden" name="'.$attr['input_meta'].'" class="fed_upload_input" value="'.$attr['user_value'].'"  /></div>
 						</div>';
-                    break;
-            }
+					break;
+			}
 
-            return $input;
+			return $input;
 
         }
 
@@ -136,103 +136,101 @@ if ( ! class_exists('FEDE_Menu')) {
             ));
         }
 
-        /**
-         * Date Field
-         *
-         * @param  array  $row
-         * @param  string  $action
-         */
-        public function fed_extra_admin_input_fields_container_extra_date($row, $action, $menu_options)
-        {
-            ?>
-            <div class="row fed_input_type_container fed_input_date_container hide">
-                <form method="post"
-                      class="fed_admin_menu fed_ajax"
-                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
+		/**
+		 * Date Field
+		 *
+		 * @param  array  $row
+		 * @param  string  $action
+		 */
+		public function fed_extra_admin_input_fields_container_extra_date($row, $action, $menu_options){
+			?><div class="row fed_input_type_container fed_input_date_container hide">
+				<form method="post"
+					  class="fed_admin_menu fed_ajax"
+					  action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
 
-                    <?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
+					<?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
 
-                    <?php echo fed_loader(); ?>
+					<?php echo fed_loader(); ?>
 
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    <b>Date</b>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="fed_input_text">
-                                    <?php fed_get_admin_up_label_input_order($row); ?>
-                                    <div class="row">
-                                        <?php fed_get_admin_up_input_meta($row) ?>
+					<div class="col-md-12">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<b>Date</b>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="fed_input_text">
+									<?php fed_get_admin_up_label_input_order($row); ?>
+									<div class="row">
+										<?php fed_get_admin_up_input_meta($row) ?>
 
-                                        <div class="form-group col-md-3">
-                                            <label for="">Class Name</label>
-                                            <?php echo fed_input_box('class_name', array('value' => $row['class_name']),
-                                                'single_line'); ?>
-                                        </div>
+										<div class="form-group col-md-3">
+											<label for="">Class Name</label>
+											<?php echo fed_input_box('class_name', array('value' => $row['class_name']),
+												'single_line'); ?>
+										</div>
 
-                                        <div class="form-group col-md-3">
-                                            <label for="">ID Name</label>
-                                            <?php echo fed_input_box('id_name', array('value' => $row['id_name']),
-                                                'single_line'); ?>
-                                        </div>
-                                    </div>
+										<div class="form-group col-md-3">
+											<label for="">ID Name</label>
+											<?php echo fed_input_box('id_name', array('value' => $row['id_name']),
+												'single_line'); ?>
+										</div>
+									</div>
 
-                                    <div class="row">
-                                        <div class="form-group col-md-3">
-                                            <label for="">Date Format</label>
-                                            <?php echo fed_input_box('date_format', array(
-                                                'name'    => 'extended[date_format]',
-                                                'value'   => isset($row['extended']['date_format']) ? $row['extended']['date_format'] : '',
-                                                'options' => fed_get_date_formats(),
-                                            ), 'select'); ?>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="">Enable Time</label>
-                                            <?php echo fed_input_box('enable_time', array(
-                                                'name'    => 'extended[enable_time]',
-                                                'value'   => isset($row['extended']['enable_time']) ? $row['extended']['enable_time'] : '',
-                                                'options' => array('false' => 'False', 'true' => 'True'),
-                                            ), 'select'); ?>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="date_mode">Date Mode</label>
-                                            <?php echo fed_input_box('date_mode', array(
-                                                'name'    => 'extended[date_mode]',
-                                                'value'   => isset($row['extended']['date_mode']) ? $row['extended']['date_mode'] : '',
-                                                'options' => fed_get_date_mode(),
-                                            ), 'select'); ?>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="">Time Hours</label>
-                                            <?php echo fed_input_box('time_24hr', array(
-                                                'name'    => 'extended[time_24hr]',
-                                                'value'   => isset($row['extended']['time_24hr']) ? $row['extended']['time_24hr'] : '',
-                                                'options' => array(
-                                                    'true'  => '24 Hours',
-                                                    'false' => '12 Hours',
-                                                ),
-                                            ), 'select'); ?>
-                                        </div>
-                                    </div>
+									<div class="row">
+										<div class="form-group col-md-3">
+											<label for="">Date Format</label>
+											<?php echo fed_input_box('date_format', array(
+												'name'    => 'extended[date_format]',
+												'value'   => isset($row['extended']['date_format']) ? $row['extended']['date_format'] : '',
+												'options' => fed_get_date_formats(),
+											), 'select'); ?>
+										</div>
+										<div class="form-group col-md-3">
+											<label for="">Enable Time</label>
+											<?php echo fed_input_box('enable_time', array(
+												'name'    => 'extended[enable_time]',
+												'value'   => isset($row['extended']['enable_time']) ? $row['extended']['enable_time'] : '',
+												'options' => array('false' => 'False', 'true' => 'True'),
+											), 'select'); ?>
+										</div>
+										<div class="form-group col-md-3">
+											<label for="date_mode">Date Mode</label>
+											<?php echo fed_input_box('date_mode', array(
+												'name'    => 'extended[date_mode]',
+												'value'   => isset($row['extended']['date_mode']) ? $row['extended']['date_mode'] : '',
+												'options' => fed_get_date_mode(),
+											), 'select'); ?>
+										</div>
+										<div class="form-group col-md-3">
+											<label for="">Time Hours</label>
+											<?php echo fed_input_box('time_24hr', array(
+												'name'    => 'extended[time_24hr]',
+												'value'   => isset($row['extended']['time_24hr']) ? $row['extended']['time_24hr'] : '',
+												'options' => array(
+													'true'  => '24 Hours',
+													'false' => '12 Hours',
+												),
+											), 'select'); ?>
+										</div>
+									</div>
 
-                                    <?php
-                                    fed_get_admin_up_display_permission($row, $action);
+									<?php
+									fed_get_admin_up_display_permission($row, $action);
 
-                                    fed_get_admin_up_role_based($row, $action, $menu_options);
+									fed_get_admin_up_role_based($row, $action, $menu_options);
 
-                                    fed_get_input_type_and_submit_btn('date', $action);
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <?php
-        }
+									fed_get_input_type_and_submit_btn('date', $action);
+									?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<?php
+		}
 
         /**
          * WP Editor Field
@@ -291,8 +289,7 @@ if ( ! class_exists('FEDE_Menu')) {
                                             <div class="form-group col-md-4">
                                                 <?php echo fed_input_box('show_register', array(
                                                     'default_value' => 'Enable',
-                                                    'label'         => __('Show in Register Form',
-                                                            'frontend-dashboard').' '.$notification,
+                                                    'label'         => __('Show in Register Form', 'frontend-dashboard').' '.$notification,
                                                     'value'         => $value,
                                                     'disabled'      => $others,
                                                 ), 'checkbox');
@@ -302,8 +299,7 @@ if ( ! class_exists('FEDE_Menu')) {
                                             <div class="form-group col-md-4">
                                                 <?php echo fed_input_box('show_dashboard', array(
                                                     'default_value' => 'Enable',
-                                                    'label'         => __('Show in User Dashboard ',
-                                                        'frontend-dashboard'),
+                                                    'label'         => __('Show in User Dashboard ', 'frontend-dashboard'),
                                                     'value'         => $row['show_dashboard'],
                                                 ), 'checkbox'); ?>
                                             </div>

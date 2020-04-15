@@ -13,15 +13,20 @@ add_filter( 'fed_plugin_versions', function ( $version ) {
 
 function fed_get_date_formats() {
 	$date_formats = array(
-		'd-m-Y' => 'Date-Month-Year',
-		'm-d-Y' => 'Month-Date-Year',
+		'd-m-Y' => 'Day-Month-Year',
+		'm-d-Y' => 'Month-Day-Year',
+		'U'		=> 'Unix Timestamp'
 	);
 
 	return apply_filters( 'fed_get_date_formats_filter', $date_formats );
 }
 
 function fed_get_date_mode() {
-	return array( 'single' => 'Single', 'multiple' => 'Multiple', 'range' => 'Range' );
+	return array( 
+		'single' => 'Single',
+		'multiple' => 'Multiple',
+		'range' => 'Range',
+	);
 }
 
 add_action( 'fed_enqueue_script_style_admin', 'fede_wp_enqueue_scripts' );
