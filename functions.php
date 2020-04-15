@@ -7,9 +7,11 @@
 /**
  * Append the Version -- Extra
  */
-add_filter( 'fed_plugin_versions', function ( $version ) {
-	return array_merge( $version, array( 'extra' => 'Extra ('.BC_FED_EXTRA_PLUGIN_VERSION.')' ) );
-} );
+add_filter('fed_plugin_versions', function($version){
+	return array_merge($version, array( 
+		'extra' => 'Extra ('.BC_FED_EXTRA_PLUGIN_VERSION.')',
+	));
+});
 
 function fed_get_date_formats() {
 	$date_formats = array(
@@ -87,7 +89,6 @@ function fed_image_mime_types() {
 		'application/x-msdownload'      => site_url() . '/wp-includes/images/media/archive.png"',
 		'application/octet-stream'      => site_url() . '/wp-includes/images/media/archive.png"',
 		'application/octet-stream'      => site_url() . '/wp-includes/images/media/document.png"',
-
 
 		'application/msword'                                                        => site_url() . '/wp-includes/images/media/document.png"',
 		'application/vnd.ms-powerpoint'                                             => site_url() . '/wp-includes/images/media/document.png"',

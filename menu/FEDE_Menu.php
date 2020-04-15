@@ -8,8 +8,7 @@ if ( ! class_exists('FEDE_Menu')) {
     /**
      * Class FEDE_Menu
      */
-    class FEDE_Menu
-    {
+    class FEDE_Menu{
         /**
          * FEDE_Menu constructor.
          */
@@ -34,7 +33,6 @@ if ( ! class_exists('FEDE_Menu')) {
         {
             switch ($attr['input_type']) {
                 case 'date':
-                    // FED_Log::writeLog($attr);
                     $extended = array();
                     if (isset($attr['extended'])) {
                         $extended = $attr['extended'];
@@ -78,8 +76,7 @@ if ( ! class_exists('FEDE_Menu')) {
 						name="'.$attr['input_meta'].'" 
 						class="form-control jscolor {hash:true} '.fed_get_data('class_name', $attr).'" 
 						id="'.fed_get_data('id_name', $attr).'" 
-						value="'.$user_value.'" 
-					>';
+						value="'.$user_value.'" >';
 					break;
 
 				case 'file':
@@ -114,23 +111,22 @@ if ( ! class_exists('FEDE_Menu')) {
          *
          * @return array
          */
-        public function fed_extra_admin_input_item_options($items)
-        {
+        public function fed_extra_admin_input_item_options($items){
             return array_merge($items, array(
                 'date'      => array(
-                    'name'  => 'Date',
+                    'name'  => __('Date'),
                     'image' => plugins_url('assets/images/inputs/date.png', BC_FED_EXTRA_PLUGIN),
                 ),
                 'file'      => array(
-                    'name'  => 'File',
+                    'name'  => __('File'),
                     'image' => plugins_url('assets/images/inputs/file.png', BC_FED_EXTRA_PLUGIN),
                 ),
                 'color'     => array(
-                    'name'  => 'Color',
+                    'name'  => __('Color'),
                     'image' => plugins_url('assets/images/inputs/color.png', BC_FED_EXTRA_PLUGIN),
                 ),
                 'wp_editor' => array(
-                    'name'  => 'WP Editor(Beta)',
+                    'name'  => __('WP Editor(Beta)'),
                     'image' => plugins_url('assets/images/inputs/wp_editor.png', BC_FED_EXTRA_PLUGIN),
                 ),
             ));
@@ -146,9 +142,9 @@ if ( ! class_exists('FEDE_Menu')) {
 			?><div class="row fed_input_type_container fed_input_date_container hide">
 				<form method="post"
 					  class="fed_admin_menu fed_ajax"
-					  action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
+					  action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form'); ?>">
 
-					<?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
+					<?php wp_nonce_field('fed_nonce', 'fed_nonce'); ?>
 
 					<?php echo fed_loader(); ?>
 
@@ -163,73 +159,72 @@ if ( ! class_exists('FEDE_Menu')) {
 								<div class="fed_input_text">
 									<?php fed_get_admin_up_label_input_order($row); ?>
 									<div class="row">
-										<?php fed_get_admin_up_input_meta($row) ?>
+										<?php fed_get_admin_up_input_meta($row); ?>
 
 										<div class="form-group col-md-3">
-											<label for="">Class Name</label>
-											<?php echo fed_input_box('class_name', array('value' => $row['class_name']),
-												'single_line'); ?>
-										</div>
+											<label for="class_name">Class Name</label><?php 
+											echo fed_input_box('class_name', array(
+												'value' => $row['class_name']
+											),'single_line');
+										?></div>
 
 										<div class="form-group col-md-3">
-											<label for="">ID Name</label>
-											<?php echo fed_input_box('id_name', array('value' => $row['id_name']),
-												'single_line'); ?>
-										</div>
+											<label for="id_name">ID Name</label><?php 
+											echo fed_input_box('id_name', array(
+												'value' => $row['id_name']
+											), 'single_line'); 
+										?></div>
 									</div>
 
 									<div class="row">
 										<div class="form-group col-md-3">
-											<label for="">Date Format</label>
-											<?php echo fed_input_box('date_format', array(
+											<label for="date_format">Date Format</label><?php 
+											echo fed_input_box('date_format', array(
 												'name'    => 'extended[date_format]',
 												'value'   => isset($row['extended']['date_format']) ? $row['extended']['date_format'] : '',
 												'options' => fed_get_date_formats(),
-											), 'select'); ?>
-										</div>
+											), 'select'); 
+										?></div>
 										<div class="form-group col-md-3">
-											<label for="">Enable Time</label>
-											<?php echo fed_input_box('enable_time', array(
+											<label for="enable_time">Enable Time</label><?php 
+											echo fed_input_box('enable_time', array(
 												'name'    => 'extended[enable_time]',
-												'value'   => isset($row['extended']['enable_time']) ? $row['extended']['enable_time'] : '',
-												'options' => array('false' => 'False', 'true' => 'True'),
-											), 'select'); ?>
-										</div>
+												'value'   => isset($row['extended']['enable_time'])? $row['extended']['enable_time'] : '',
+												'options' => array(
+													'false' => 'False', 
+													'true' => 'True'
+												),
+											), 'select'); 
+										?></div>
 										<div class="form-group col-md-3">
-											<label for="date_mode">Date Mode</label>
-											<?php echo fed_input_box('date_mode', array(
+											<label for="date_mode">Date Mode</label><?php 
+											echo fed_input_box('date_mode', array(
 												'name'    => 'extended[date_mode]',
 												'value'   => isset($row['extended']['date_mode']) ? $row['extended']['date_mode'] : '',
 												'options' => fed_get_date_mode(),
-											), 'select'); ?>
-										</div>
+											), 'select');
+										?></div>
 										<div class="form-group col-md-3">
-											<label for="">Time Hours</label>
-											<?php echo fed_input_box('time_24hr', array(
+											<label for="time_24hr">Time Hours</label><?php 
+											echo fed_input_box('time_24hr', array(
 												'name'    => 'extended[time_24hr]',
 												'value'   => isset($row['extended']['time_24hr']) ? $row['extended']['time_24hr'] : '',
 												'options' => array(
 													'true'  => '24 Hours',
 													'false' => '12 Hours',
 												),
-											), 'select'); ?>
-										</div>
-									</div>
-
-									<?php
+											), 'select');
+										?></div>
+									</div><?php									
 									fed_get_admin_up_display_permission($row, $action);
-
 									fed_get_admin_up_role_based($row, $action, $menu_options);
-
 									fed_get_input_type_and_submit_btn('date', $action);
-									?>
-								</div>
+								?></div>
 							</div>
 						</div>
 					</div>
 				</form>
-			</div>
-			<?php
+			</div><?php
 		}
 
         /**
@@ -239,15 +234,13 @@ if ( ! class_exists('FEDE_Menu')) {
          * @param $action
          * @param $menu_options
          */
-        public function fed_extra_admin_input_fields_container_extra_wp_editor($row, $action, $menu_options)
-        {
-            ?>
-            <div class="row fed_input_type_container fed_input_wp_editor_container hide">
+        public function fed_extra_admin_input_fields_container_extra_wp_editor($row, $action, $menu_options){
+            ?><div class="row fed_input_type_container fed_input_wp_editor_container hide">
                 <form method="post"
                       class="fed_admin_menu fed_ajax"
-                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
+                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form'); ?>">
 
-                    <?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
+                    <?php wp_nonce_field('fed_nonce', 'fed_nonce'); ?>
 
                     <?php echo fed_loader(); ?>
 
@@ -262,104 +255,97 @@ if ( ! class_exists('FEDE_Menu')) {
                                 <div class="fed_input_text">
                                     <?php fed_get_admin_up_label_input_order($row); ?>
                                     <div class="row">
-                                        <?php fed_get_admin_up_input_meta($row) ?>
+                                        <?php fed_get_admin_up_input_meta($row); ?>
 
                                         <div class="form-group col-md-3">
-                                            <label for="">Class Name</label>
-                                            <?php echo fed_input_box('class_name', array('value' => $row['class_name']),
-                                                'single_line'); ?>
-                                        </div>
+                                            <label for="class_name">Class Name</label><?php 
+                                            echo fed_input_box('class_name', array(
+                                            	'value' => $row['class_name']
+                                            ), 'single_line');
+                                        ?></div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="">ID Name</label>
-                                            <?php echo fed_input_box('id_name',
-                                                array('value' => ! empty($row['id_name']) ? $row['id_name'] : fed_get_random_string(10)),
-                                                'single_line'); ?>
-                                        </div>
+                                            <label for="id_name">ID Name</label><?php 
+                                            echo fed_input_box('id_name', array(
+                                                	'value' => !empty($row['id_name'])? $row['id_name'] : fed_get_random_string(10)
+                                            ), 'single_line');
+                                        ?></div>
                                     </div>
 
-                                    <div class="row fed_admin_up_display_permission">
-                                        <?php
+                                    <div class="row fed_admin_up_display_permission"><?php
                                         if ($action === 'profile') {
 
                                             $value        = $row['show_register'];
                                             $others       = '';
                                             $notification = '';
                                             ?>
-                                            <div class="form-group col-md-4">
-                                                <?php echo fed_input_box('show_register', array(
+                                            <div class="form-group col-md-4"><?php 
+                                                echo fed_input_box('show_register', array(
                                                     'default_value' => 'Enable',
                                                     'label'         => __('Show in Register Form', 'frontend-dashboard').' '.$notification,
                                                     'value'         => $value,
                                                     'disabled'      => $others,
                                                 ), 'checkbox');
-                                                ?>
-                                            </div>
+                                            ?></div>
 
-                                            <div class="form-group col-md-4">
-                                                <?php echo fed_input_box('show_dashboard', array(
+                                            <div class="form-group col-md-4"><?php 
+                                                echo fed_input_box('show_dashboard', array(
                                                     'default_value' => 'Enable',
                                                     'label'         => __('Show in User Dashboard ', 'frontend-dashboard'),
                                                     'value'         => $row['show_dashboard'],
-                                                ), 'checkbox'); ?>
-                                            </div>
-                                        <?php } ?>
-
-                                        <?php if ($action == 'post') {
-                                            ?>
-                                            <div class="form-group col-md-4">
+                                                ), 'checkbox');
+                                            ?></div><?php 
+                                        }
+   
+                                        if ($action == 'post') {
+                                            ?><div class="form-group col-md-4">
                                                 <label><?php _e('Post Type', 'frontend-dashboard') ?></label>
                                                 <?php echo fed_input_box('post_type', array(
                                                     'default_value' => 'Post',
                                                     'value'         => $row['post_type'],
                                                     'options'       => fed_get_public_post_types(),
-                                                ), 'select'); ?>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
+                                                ), 'select');
+                                             ?></div><?php 
+                                        }
+                                    ?></div>
 
                                     <div class="row fed_e_wp_editor_1">
-                                        <div class="form-group col-md-3">
-                                            <?php echo fed_input_box('extended[settings][media_buttons]', array(
+                                        <div class="form-group col-md-3"><?php 
+                                            echo fed_input_box('extended[settings][media_buttons]', array(
                                                 'default_value' => 'true',
-                                                'label'         => __('Enable Media',
-                                                    'frontend-dashboard'),
+                                                'label'         => __('Enable Media', 'frontend-dashboard'),
                                                 'value'         => fed_get_data('extended.settings.media_buttons', $row),
-                                            ), 'checkbox'); ?>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <?php echo fed_input_box('extended[settings][quicktags]', array(
+                                            ), 'checkbox');
+                                        ?></div>
+                                        <div class="form-group col-md-3"><?php 
+                                            echo fed_input_box('extended[settings][quicktags]', array(
                                                 'default_value' => 'true',
-                                                'label'         => __('Enable Quick Tags',
-                                                    'frontend-dashboard'),
+                                                'label'         => __('Enable Quick Tags', 'frontend-dashboard'),
                                                 'value'         => fed_get_data('extended.settings.quicktags', $row),
-                                            ), 'checkbox'); ?>
-                                        </div>
+                                            ), 'checkbox');
+                                        ?></div>
                                         <div class="form-group col-md-3">
-                                            <label for="">Textarea Rows</label>
-                                            <?php echo fed_input_box('extended[settings][textarea_rows]',
-                                                array('value' => fed_get_data('extended.settings.textarea_rows', $row)),
-                                                'number'); ?>
-                                        </div>
+                                            <label for="extended[settings][textarea_rows]">Textarea Rows</label><?php 
+                                            echo fed_input_box('extended[settings][textarea_rows]', array(
+                                            	'value' => fed_get_data('extended.settings.textarea_rows', $row)
+                                            ), 'number');
+                                        ?></div>
                                         <div class="form-group col-md-3">
-                                            <label for="">Editor Height</label>
-                                            <?php echo fed_input_box('extended[settings][editor_height]',
-                                                array('value' => fed_get_data('extended.settings.editor_height', $row)),
-                                                'number'); ?>
-                                        </div>
-                                    </div>
-                                    <?php
+                                            <label for="extended[settings][editor_height]">Editor Height</label><?php 
+                                            echo fed_input_box('extended[settings][editor_height]', array(
+                                            	'value' => fed_get_data('extended.settings.editor_height', $row)
+                                            ), 'number');
+                                        ?></div>
+                                    </div><?php
                                     fed_get_admin_up_role_based($row, $action, $menu_options);
 
                                     fed_get_input_type_and_submit_btn('wp_editor', $action);
-                                    ?>
-                                </div>
+                                ?></div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <?php
+            </div><?php
         }
 
         /**
@@ -368,15 +354,13 @@ if ( ! class_exists('FEDE_Menu')) {
          * @param  array  $row
          * @param  string  $action
          */
-        public function fed_extra_admin_input_fields_container_extra_file($row, $action, $menu_options)
-        {
-            ?>
-            <div class="row fed_input_type_container fed_input_file_container hide">
+        public function fed_extra_admin_input_fields_container_extra_file($row, $action, $menu_options){
+            ?><div class="row fed_input_type_container fed_input_file_container hide">
                 <form method="post"
                       class="fed_admin_menu fed_ajax"
-                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
+                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form'); ?>">
 
-                    <?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
+                    <?php wp_nonce_field('fed_nonce', 'fed_nonce'); ?>
 
                     <?php echo fed_loader(); ?>
 
@@ -391,34 +375,32 @@ if ( ! class_exists('FEDE_Menu')) {
                                 <div class="fed_input_text">
                                     <?php fed_get_admin_up_label_input_order($row); ?>
                                     <div class="row">
-                                        <?php fed_get_admin_up_input_meta($row) ?>
+                                        <?php fed_get_admin_up_input_meta($row); ?>
                                         <div class="form-group col-md-3">
-                                            <label for="">Class Name</label>
-                                            <?php echo fed_input_box('class_name', array('value' => $row['class_name']),
-                                                'single_line'); ?>
-                                        </div>
+                                            <label for="class_name">Class Name</label><?php 
+                                            echo fed_input_box('class_name', array(
+                                            	'value' => $row['class_name']
+                                           	), 'single_line');
+                                        ?></div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="">ID Name</label>
-                                            <?php echo fed_input_box('id_name', array('value' => $row['id_name']),
-                                                'single_line'); ?>
-                                        </div>
-                                    </div>
-
-                                    <?php
+                                            <label for="id_name">ID Name</label><?php 
+                                            echo fed_input_box('id_name', array(
+                                            	'value' => $row['id_name']
+                                            ), 'single_line');
+                                        ?></div>
+                                    </div><?php
                                     fed_get_admin_up_display_permission($row, $action, $type = 'file');
 
                                     fed_get_admin_up_role_based($row, $action, $menu_options);
 
                                     fed_get_input_type_and_submit_btn('file', $action);
-                                    ?>
-                                </div>
+                                ?></div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <?php
+            </div><?php
         }
 
         /**
@@ -427,15 +409,14 @@ if ( ! class_exists('FEDE_Menu')) {
          * @param  array  $row
          * @param  string  $action
          */
-        public function fed_extra_admin_input_fields_container_extra_color($row, $action, $menu_options)
-        {
+        public function fed_extra_admin_input_fields_container_extra_color($row, $action, $menu_options){
             ?>
             <div class="row fed_input_type_container fed_input_color_container hide">
                 <form method="post"
                       class="fed_admin_menu fed_ajax"
-                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form') ?>">
+                      action="<?php echo admin_url('admin-ajax.php?action=fed_admin_setting_up_form'); ?>">
 
-                    <?php wp_nonce_field('fed_nonce', 'fed_nonce') ?>
+                    <?php wp_nonce_field('fed_nonce', 'fed_nonce'); ?>
 
                     <?php echo fed_loader(); ?>
 
@@ -450,36 +431,34 @@ if ( ! class_exists('FEDE_Menu')) {
                                 <div class="fed_input_text">
                                     <?php fed_get_admin_up_label_input_order($row); ?>
                                     <div class="row">
-                                        <?php fed_get_admin_up_input_meta($row) ?>
+                                        <?php fed_get_admin_up_input_meta($row); ?>
 
                                         <div class="form-group col-md-3">
-                                            <label for="">Class Name</label>
-                                            <?php echo fed_input_box('class_name', array('value' => $row['class_name']),
-                                                'single_line'); ?>
-                                        </div>
+                                            <label for="class_name">Class Name</label><?php 
+                                            echo fed_input_box('class_name', array(
+                                            	'value' => $row['class_name']
+                                            ), 'single_line');
+                                        ?></div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="">ID Name</label>
-                                            <?php echo fed_input_box('id_name', array('value' => $row['id_name']),
-                                                'single_line'); ?>
-                                        </div>
+                                            <label for="id_name">ID Name</label><?php 
+                                            echo fed_input_box('id_name', array(
+                                            	'value' => $row['id_name']
+                                            ), 'single_line');
+                                        ?></div>
 
-                                    </div>
-
-                                    <?php
+                                    </div><?php
                                     fed_get_admin_up_display_permission($row, $action);
 
                                     fed_get_admin_up_role_based($row, $action, $menu_options);
 
                                     fed_get_input_type_and_submit_btn('color', $action);
-                                    ?>
-                                </div>
+                                ?></div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <?php
+            </div><?php
         }
 
 
@@ -488,8 +467,7 @@ if ( ! class_exists('FEDE_Menu')) {
          *
          * @return string
          */
-        private function get_image_by_type($values)
-        {
+        private function get_image_by_type($values){
             $mime_type = get_post_mime_type($values['user_value']);
             $default   = fed_image_mime_types();
             if (strpos($mime_type, 'image') !== false) {
@@ -507,8 +485,7 @@ if ( ! class_exists('FEDE_Menu')) {
         /**
          * @param $menu
          */
-        public function fed_admin_dashboard_settings_menu_header_extra($menu)
-        {
+        public function fed_admin_dashboard_settings_menu_header_extra($menu){
             $menu['general'] = array(
                 'icon_class' => 'fas fa-tachometer-alt',
                 'name'       => __('General', 'frontend-dashboard-extra'),

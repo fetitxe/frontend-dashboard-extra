@@ -10,8 +10,7 @@ if ( ! defined('ABSPATH')) {
  *
  * @return string
  */
-function fed_e_form_wpeditor($options)
-{
+function fed_e_form_wpeditor($options){
     $name     = fed_get_data('input_meta', $options);
     $value    = fed_get_data('user_value', $options, '', false);
     $class    = 'form-control '.fed_get_data('class_name', $options);
@@ -23,15 +22,17 @@ function fed_e_form_wpeditor($options)
     $textarea_rows = fed_get_data('settings.textarea_rows', $extended, 10);
     $editor_height = fed_get_data('settings.editor_height', $extended, 30);
 
-    return '<label id="'.$id.'">'.fed_get_wp_editor($value,
-            $name, array(
-                'textarea_name' => $name,
-                'media_buttons' => $media_buttons,
-                'textarea_rows' => $textarea_rows,
-                'editor_height' => $editor_height,
-                'editor_class'  => $class,
-                'quicktags'     => $quicktags,
-            )).'</label>';
+	return '<label id="' . $id . '">' . fed_get_wp_editor(
+		$value,
+		$name, array(
+			'textarea_name' => $name,
+			'media_buttons' => $media_buttons,
+			'textarea_rows' => $textarea_rows,
+			'editor_height' => $editor_height,
+			'editor_class'  => $class,
+			'quicktags'     => $quicktags,
+		)
+	) . '</label>';
 }
 
 add_filter('fed_default_extended_fields', 'fed_e_default_extended_fields');
@@ -45,8 +46,7 @@ add_filter('fed_process_form_fields', 'fed_e_process_form_fields', 10, 4);
  *
  * @return array
  */
-function fed_e_process_form_fields($default, $row, $action, $update)
-{
+function fed_e_process_form_fields($default, $row, $action, $update){
     if ($row['input_type'] === 'wp_editor') {
         if ($update === 'yes') {
             $extended = array(
@@ -85,8 +85,7 @@ function fed_e_process_form_fields($default, $row, $action, $update)
  *
  * @return array
  */
-function fed_e_default_extended_fields($fields)
-{
+function fed_e_default_extended_fields($fields){
     $array = array(
         'settings' => array(),
     );
