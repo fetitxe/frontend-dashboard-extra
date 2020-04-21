@@ -4,15 +4,15 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
-if ( ! class_exists('FEDE_Menu')) {
-    /**
-     * Class FEDE_Menu
-     */
-    class FEDE_Menu{
-        /**
-         * FEDE_Menu constructor.
-         */
-        public function __construct(){
+if( !class_exists('FEDE_Menu')){
+	/**
+	 * Class FEDE_Menu
+	 */
+	class FEDE_Menu{
+		/**
+		 * FEDE_Menu constructor.
+		 */
+		public function __construct(){
 			add_action('fed_admin_input_item_options', array($this, 'fed_extra_admin_input_item_options'));
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_date'), 10, 3);
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_wp_editor'), 13, 3);
@@ -20,36 +20,35 @@ if ( ! class_exists('FEDE_Menu')) {
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_color'), 12, 3);
 
 			add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
-        }
+		}
 
-        /**
-         * @param $input
-         * @param $values
-         * @param $attr
-         *
-         * @return string
-         */
-        public function fed_extra_custom_input_fields($input, $attr)
-        {
-            switch ($attr['input_type']) {
-                case 'date':
-                    $extended = array();
-                    if (isset($attr['extended'])) {
-                        $extended = $attr['extended'];
-                        if (is_string($extended)) {
-                            $extended = unserialize($extended);
-                        }
-                    }
+		/**
+		 * @param $input
+		 * @param $values
+		 * @param $attr
+		 *
+		 * @return string
+		 */
+		public function fed_extra_custom_input_fields($input, $attr){
+			switch ($attr['input_type']) {
+				case 'date':
+					$extended = array();
+					if (isset($attr['extended'])) {
+						$extended = $attr['extended'];
+						if (is_string($extended)) {
+							$extended = unserialize($extended);
+						}
+					}
 
-                    $dateFormat = isset($extended['date_format']) && ! empty($extended['date_format']) ? esc_attr($extended['date_format']) : 'm-d-Y';
+					$dateFormat = isset($extended['date_format']) && ! empty($extended['date_format']) ? esc_attr($extended['date_format']) : 'm-d-Y';
 
-                    $mode = isset($extended['date_mode']) && ! empty($extended['date_mode']) ? esc_attr($extended['date_mode']) : 'single';
+					$mode = isset($extended['date_mode']) && ! empty($extended['date_mode']) ? esc_attr($extended['date_mode']) : 'single';
 
-                    $enableTime = isset($extended['enable_time']) && ! empty($extended['enable_time']) ? esc_attr($extended['enable_time']) : false;
+					$enableTime = isset($extended['enable_time']) && ! empty($extended['enable_time']) ? esc_attr($extended['enable_time']) : false;
 
-                    $time_24hr = isset($extended['time_24hr']) && ! empty($extended['time_24hr']) ? esc_attr($extended['time_24hr']) : false;
+					$time_24hr = isset($extended['time_24hr']) && ! empty($extended['time_24hr']) ? esc_attr($extended['time_24hr']) : false;
 
-                    $input .= '<input type="text" '.fed_get_data('is_required', $attr).' 
+					$input .= '<input type="text" '.fed_get_data('is_required', $attr).' 
 						data-date-format="U" 
 						data-alt-format="'.$dateFormat.'" 
 						data-alt-input="true" 
@@ -63,9 +62,9 @@ if ( ! class_exists('FEDE_Menu')) {
 						id="'.fed_get_data('id_name', $attr).'" 
 						value="'.fed_get_data('user_value', $attr).'" >';
 						
-                    break;
+					break;
 
-                case 'wp_editor':
+				case 'wp_editor':
 					$input .= fed_e_form_wpeditor($attr);
 					break;
 
@@ -80,57 +79,41 @@ if ( ! class_exists('FEDE_Menu')) {
 					break;
 
 				case 'file':
-					$user_value =fed_get_data('user_value',$attr);
-					if ( ! empty($user_value)) {
-						$attr['user_value'] = (int) $user_value;
-						$img = $this->get_image_by_type($attr);
-						if (empty($img)) {
-							$img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
-						}
-					} else {
-						$attr['user_value'] = '';
-						$img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
-					}
-					$input .= '<div class="fed_upload_wrapper">
-						<button type="button" class="close fed_remove_image" aria-label="Close" style="margin-right:.5rem;"><span aria-hidden="true">&times;</span></button>
-						<div class="fed_upload_container text-center '.fed_get_data('class_name', $attr).'" id="'.fed_get_data('id_name', $attr).'">
-							<div class="fed_upload_image_container thumbnail">'.$img.'</div>
-							<input type="hidden" name="'.$attr['input_meta'].'" class="fed_upload_input" value="'.$attr['user_value'].'"  /></div>
-						</div>';
+					$input .= fed_form_files($attr);
 					break;
 			}
 
 			return $input;
 
-        }
+		}
 
-        /**
-         * Append Dropdown Item
-         *
-         * @param  array  $items
-         *
-         * @return array
-         */
-        public function fed_extra_admin_input_item_options($items){
-            return array_merge($items, array(
-                'date'      => array(
-                    'name'  => __('Date'),
-                    'image' => plugins_url('assets/images/inputs/date.png', BC_FED_EXTRA_PLUGIN),
-                ),
-                'file'      => array(
-                    'name'  => __('File'),
-                    'image' => plugins_url('assets/images/inputs/file.png', BC_FED_EXTRA_PLUGIN),
-                ),
-                'color'     => array(
-                    'name'  => __('Color'),
-                    'image' => plugins_url('assets/images/inputs/color.png', BC_FED_EXTRA_PLUGIN),
-                ),
-                'wp_editor' => array(
-                    'name'  => __('WP Editor(Beta)'),
-                    'image' => plugins_url('assets/images/inputs/wp_editor.png', BC_FED_EXTRA_PLUGIN),
-                ),
-            ));
-        }
+		/**
+		 * Append Dropdown Item
+		 *
+		 * @param  array  $items
+		 *
+		 * @return array
+		 */
+		public function fed_extra_admin_input_item_options($items){
+			return array_merge($items, array(
+				'date'      => array(
+					'name'  => __('Date'),
+					'image' => plugins_url('assets/images/inputs/date.png', BC_FED_EXTRA_PLUGIN),
+				),
+				'file'      => array(
+					'name'  => __('File'),
+					'image' => plugins_url('assets/images/inputs/file.png', BC_FED_EXTRA_PLUGIN),
+				),
+				'color'     => array(
+					'name'  => __('Color'),
+					'image' => plugins_url('assets/images/inputs/color.png', BC_FED_EXTRA_PLUGIN),
+				),
+				'wp_editor' => array(
+					'name'  => __('WP Editor(Beta)'),
+					'image' => plugins_url('assets/images/inputs/wp_editor.png', BC_FED_EXTRA_PLUGIN),
+				),
+			));
+		}
 
 		/**
 		 * Date Field
