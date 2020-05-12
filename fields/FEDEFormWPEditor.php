@@ -4,7 +4,6 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
-
 /**
  * @param $options
  *
@@ -35,9 +34,6 @@ function fed_e_form_wpeditor($options){
 	) . '</label>';
 }
 
-add_filter('fed_default_extended_fields', 'fed_e_default_extended_fields');
-add_filter('fed_process_form_fields', 'fed_e_process_form_fields', 10, 4);
-
 /**
  * @param $default
  * @param $row
@@ -47,38 +43,35 @@ add_filter('fed_process_form_fields', 'fed_e_process_form_fields', 10, 4);
  * @return array
  */
 function fed_e_process_form_fields($default, $row, $action, $update){
-    if ($row['input_type'] === 'wp_editor') {
-        if ($update === 'yes') {
-            $extended = array(
-                'extended' => serialize(array(
-                    'settings' => array(
-                        'textarea_name'    => fed_get_data('input_meta', $row),
-                        'media_buttons'    => fed_get_data('extended.settings.media_buttons', $row),
-                        'textarea_rows'    => fed_get_data('extended.settings.textarea_rows', $row, 10),
-                        'editor_class'     => fed_get_data('class_name', $row),
-                        'editor_height'    => fed_get_data('extended.settings.editor_height', $row, 5),
-                        'quicktags'        => fed_get_data('extended.settings.quicktags', $row),
-                    ),
-                )),
-            );
-
-            return array_merge($default, $extended);
-        } else {
-            if (is_string($row['extended'])) {
-                $default['extended'] = unserialize($row['extended']);
-
-                return $default;
-            }
-            if (is_array($row['extended'])) {
-                $default['extended'] = $row['extended'];
-
-                return $default;
-            }
-        }
-    }
-
-    return $default;
+	if( 'wp_editor' === $row['input_type'] ){
+		if( $update === 'yes' ){
+			$extended = array(
+				'extended' => serialize(array(
+					'settings' => array(
+						'textarea_name'    => fed_get_data('input_meta', $row),
+						'media_buttons'    => fed_get_data('extended.settings.media_buttons', $row),
+						'textarea_rows'    => fed_get_data('extended.settings.textarea_rows', $row, 10),
+						'editor_class'     => fed_get_data('class_name', $row),
+						'editor_height'    => fed_get_data('extended.settings.editor_height', $row, 5),
+						'quicktags'        => fed_get_data('extended.settings.quicktags', $row),
+					),
+				)),
+			);
+			return array_merge($default, $extended);
+		}else{
+			if( is_string($row['extended']) ){
+				$default['extended'] = unserialize($row['extended']);
+				return $default;
+			}
+			if( is_array($row['extended']) ){
+				$default['extended'] = $row['extended'];
+				return $default;
+			}
+		}
+	}
+	return $default;
 }
+add_filter('fed_process_form_fields', 'fed_e_process_form_fields', 10, 4);
 
 /**
  * @param $fields
@@ -86,9 +79,8 @@ function fed_e_process_form_fields($default, $row, $action, $update){
  * @return array
  */
 function fed_e_default_extended_fields($fields){
-    $array = array(
-        'settings' => array(),
-    );
-
-    return array_merge($fields, $array);
+	return array_merge($fields, array(
+		'settings' => array(),
+	));
 }
+add_filter('fed_default_extended_fields', 'fed_e_default_extended_fields');
