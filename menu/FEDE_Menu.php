@@ -18,6 +18,12 @@ if( !class_exists('FEDE_Menu')){
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_wp_editor'), 13, 3);
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_file'), 12, 3);
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_color'), 12, 3);
+			add_action(
+				'fed_admin_input_fields_container_extra', array(
+				$this,
+				'fed_extra_admin_input_fields_container_extra_label',
+			), 12, 3
+			);
 
 			add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
 		}
@@ -81,6 +87,10 @@ if( !class_exists('FEDE_Menu')){
 				case 'file':
 					$input .= fed_form_files($attr);
 					break;
+
+				case 'label':
+					$input .= fed_form_label( $attr );
+					break;
 			}
 
 			return $input;
@@ -111,6 +121,10 @@ if( !class_exists('FEDE_Menu')){
 				'wp_editor' => array(
 					'name'  => __('WP Editor(Beta)'),
 					'image' => plugins_url('assets/images/inputs/wp_editor.png', BC_FED_EXTRA_PLUGIN),
+				),
+				'label'     => array(
+					'name'  => 'Label',
+					'image' => plugins_url( 'assets/images/inputs/label.png', BC_FED_EXTRA_PLUGIN ),
 				),
 			));
 		}
@@ -443,6 +457,85 @@ if( !class_exists('FEDE_Menu')){
                 </form>
             </div><?php
         }
+
+		/**
+		 * Label Field
+		 *
+		 * @param  array  $row
+		 * @param  string $action
+		 */
+		public function fed_extra_admin_input_fields_container_extra_label( $row, $action, $menu_options ) {
+			?>
+			<div class="row fed_input_type_container fed_input_label_container hide">
+				<form method="post"
+						class="fed_admin_menu fed_ajax"
+						action="<?php echo admin_url( 'admin-ajax.php?action=fed_admin_setting_up_form' ); ?>">
+
+					<?php wp_nonce_field( 'fed_nonce', 'fed_nonce' ); ?>
+
+					<?php echo fed_loader(); ?>
+
+					<div class="col-md-12">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<b>Label</b>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="fed_input_text">
+									<?php fed_get_admin_up_label_input_order( $row ); ?>
+									<div class="row">
+										<?php fed_get_admin_up_input_meta( $row ); ?>
+
+										<div class="form-group col-md-3">
+											<label for="">Class Name</label>
+											<?php
+											echo fed_input_box(
+												'class_name', array( 'value' => $row['class_name'] ),
+												'single_line'
+											);
+											?>
+										</div>
+
+										<div class="form-group col-md-3">
+											<label for="">ID Name</label>
+											<?php
+											echo fed_input_box(
+												'id_name', array( 'value' => $row['id_name'] ),
+												'single_line'
+											);
+											?>
+										</div>
+
+									</div>
+
+									<?php
+									fed_get_admin_up_display_permission( $row, $action );
+
+									fed_get_admin_up_role_based( $row, $action, $menu_options );
+									?>
+
+									<div class="row">
+										<div class="col-md-12">
+											<label for="">Label Content</label>
+											<?php
+											wp_editor( $row['input_value'], 'input_value',
+												array( 'media_buttons' => false ) );
+											?>
+										</div>
+									</div>
+									<?php
+									fed_get_input_type_and_submit_btn( 'color', $action );
+									?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<?php
+		}
 
 
         /**
