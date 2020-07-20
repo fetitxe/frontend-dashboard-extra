@@ -18,9 +18,9 @@ add_filter('fed_plugin_versions', function($version){
  */
 function fed_get_date_formats(){
 	return apply_filters('fed_get_date_formats_filter', array(
-		'd-m-Y' 	=> 'Day-Month-Year',
-		'm-d-Y' 	=> 'Month-Day-Year',
-		'U' 		=> 'Unix Timestamp'
+		'd-m-Y' 	=> __('Day-Month-Year', 'frontend-dashboard'),
+		'm-d-Y' 	=> __('Month-Day-Year', 'frontend-dashboard'),
+		'U' 		=> __('Unix Timestamp', 'frontend-dashboard')
 	));
 }
 
@@ -29,9 +29,9 @@ function fed_get_date_formats(){
  */
 function fed_get_date_mode() {
 	return array( 
-		'single' 	=> 'Single',
-		'multiple' 	=> 'Multiple',
-		'range' 	=> 'Range',
+		'single' 	=> __('Single', 'frontend-dashboard'),
+		'multiple' 	=> __('Multiple', 'frontend-dashboard'),
+		'range' 	=> __('Range', 'frontend-dashboard'),
 	);
 }
 
@@ -50,40 +50,40 @@ function fede_wp_enqueue_scripts() {
  */
 function fed_image_mime_types() {
 	return array(
-		'video/x-ms-asf' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/x-ms-wmv' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/x-ms-wmx' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/x-ms-wm' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/avi' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/divx' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/x-flv' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/quicktime' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/mpeg' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/mp4' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/ogg' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/webm' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/x-matroska' 				=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/3gpp' 					=> site_url() . '/wp-includes/images/media/video.png"',
-		'video/3gpp2' 					=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-ms-asf' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-ms-wmv' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-ms-wmx' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-ms-wm' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/avi' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/divx' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-flv' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/quicktime' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/mpeg' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/mp4' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/ogg' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/webm' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/x-matroska' 																=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/3gpp' 																	=> site_url() . '/wp-includes/images/media/video.png"',
+		'video/3gpp2' 																	=> site_url() . '/wp-includes/images/media/video.png"',
 
-		'text/plain' 					=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/csv' 						=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/tab-separated-values' 	=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/calendar' 				=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/richtext' 				=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/css' 						=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/html' 					=> site_url() . '/wp-includes/images/media/text.png"',
-		'text/vtt' 						=> site_url() . '/wp-includes/images/media/text.png"',
-		'application/ttaf+xml' 			=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/plain' 																	=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/csv' 																		=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/tab-separated-values' 													=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/calendar' 																=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/richtext' 																=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/css' 																		=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/html' 																	=> site_url() . '/wp-includes/images/media/text.png"',
+		'text/vtt' 																		=> site_url() . '/wp-includes/images/media/text.png"',
+		'application/ttaf+xml' 															=> site_url() . '/wp-includes/images/media/text.png"',
 
-		'audio/mpeg' 					=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/x-realaudio' 			=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/wav' 					=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/ogg' 					=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/midi' 					=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/x-ms-wma' 				=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/x-ms-wax' 				=> site_url() . '/wp-includes/images/media/audio.png"',
-		'audio/x-matroska' 				=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/mpeg' 																	=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/x-realaudio' 															=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/wav' 																	=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/ogg' 																	=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/midi' 																	=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/x-ms-wma' 																=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/x-ms-wax' 																=> site_url() . '/wp-includes/images/media/audio.png"',
+		'audio/x-matroska' 																=> site_url() . '/wp-includes/images/media/audio.png"',
 
 		'application/rtf' 																=> site_url() . '/wp-includes/images/media/archive.png"',
 		'application/javascript' 														=> site_url() . '/wp-includes/images/media/archive.png"',
@@ -97,6 +97,7 @@ function fed_image_mime_types() {
 		'application/x-7z-compressed' 													=> site_url() . '/wp-includes/images/media/archive.png"',
 		'application/x-msdownload' 														=> site_url() . '/wp-includes/images/media/archive.png"',
 		'application/octet-stream' 														=> site_url() . '/wp-includes/images/media/archive.png"',
+
 		'application/octet-stream' 														=> site_url() . '/wp-includes/images/media/document.png"',
 		'application/msword' 															=> site_url() . '/wp-includes/images/media/document.png"',
 		'application/vnd.ms-powerpoint' 												=> site_url() . '/wp-includes/images/media/document.png"',

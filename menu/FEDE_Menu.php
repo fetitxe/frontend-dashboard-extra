@@ -18,12 +18,7 @@ if( !class_exists('FEDE_Menu')){
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_wp_editor'), 13, 3);
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_file'), 12, 3);
 			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_color'), 12, 3);
-			add_action(
-				'fed_admin_input_fields_container_extra', array(
-				$this,
-				'fed_extra_admin_input_fields_container_extra_label',
-			), 12, 3
-			);
+			add_action('fed_admin_input_fields_container_extra', array($this, 'fed_extra_admin_input_fields_container_extra_label'), 12, 3);
 
 			add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
 		}
@@ -212,7 +207,7 @@ if( !class_exists('FEDE_Menu')){
 												),
 											), 'select');
 										?></div>
-									</div><?php									
+									</div><?php
 									fed_get_admin_up_display_permission($row, $action);
 									fed_get_admin_up_role_based($row, $action, $menu_options);
 									fed_get_input_type_and_submit_btn('date', $action);
